@@ -1,0 +1,21 @@
+<!--新闻详情页面-->
+<view class='news-title'>{{newsTitle}}</view>
+<view class='news-attr'>
+  <view class='attr-left'>
+    <view class='news-src' wx:if='{{source!=""}}'>{{source}}</view>
+    <view class='news-src' wx:else>未知来源</view>
+    <view class='news-date'>{{date}}</view>
+  </view>
+  <view class='attr-right'>
+    <view class='news-read-count'>{{readCount}}</view>
+    <view>阅读</view>
+  </view>
+</view>
+<view class='content-warrper'>
+  <view class='content' wx:for='{{content}}'>
+    <p wx:if='{{item.type=="p"}}'>{{item.text}}</p>
+    <strong wx:elif='{{item.type=="strong"}}'>{{item.text}}</strong>
+    <image wx:elif='{{item.type=="image"}}' src='{{item.src}}'></image>
+    <view wx:else>{{item.text}}</view>
+  </view>
+</view>
