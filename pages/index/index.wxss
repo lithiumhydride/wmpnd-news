@@ -53,11 +53,11 @@
   width: 680rpx;
   margin-left: 20rpx;
   margin-right: 20rpx;
-  color: snow;
+  color: lightgray;
 }
 
 .hot .source-warrper {
-  color: snow;
+  color: lightgray;
 }
 
 .hot .news-image {
