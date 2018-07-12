@@ -24,16 +24,24 @@ Page({
   },
 
   /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+    this.getNewsDetial(this.data.newsId, () => {
+      wx.stopPullDownRefresh()
+    })
+  },
+
+  /**
    * 获取新闻详情
    */
-  getNewsDetial(newsId) {
+  getNewsDetial(newsId, callback) {
     wx.request({
       url: 'https://test-miniprogram.com/api/news/detail',
       data: {
         id: newsId,
       },
       success: res => {
-        console.log(res.data.result)
         this.setData({
           content: res.data.result.content,
           newsTitle: res.data.result.title,
@@ -41,6 +49,9 @@ Page({
           date: res.data.result.date.substr(11, 5),
           readCount: res.data.result.readCount,
         })
+      },
+      complete: res=> {
+        callback && callback()
       }
     })
   }

@@ -82,7 +82,7 @@
   margin: 10rpx 0;
   font-size: 25rpx;
   line-height: 35rpx;
-  color: rgba(80, 80, 80, 0.6)
+  color: rgba(80, 80, 80, 0.6);
 }
 
 .news-date {

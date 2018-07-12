@@ -3,7 +3,7 @@
   font-size: 42rpx;
   line-height: 59rpx;
   padding: 40rpx 30rpx 20rpx;
-  border-top: solid 2rpx rgba(52, 160, 224, 0.8)
+  border-top: solid 2rpx rgba(52, 160, 224, 0.8);
 }
 
 .news-attr {
@@ -11,7 +11,7 @@
   margin-bottom: 20rpx;
   font-size: 24rpx;
   line-height: 33.6rpx;
-  color: rgba(50, 50, 50, 0.6)
+  color: rgba(50, 50, 50, 0.6);
 }
 
 .attr-left {

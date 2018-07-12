@@ -1,6 +1,10 @@
 // pages/index/index.js
-//滑动切换新闻类型时，触发切换的位移限制
-const shiftLimit = {x: 60, y: 60}
+
+const shiftLimit = { x: 60, y: 60 }   //滑动切换新闻类型时，触发切换的位移限制
+
+const dftImg = '/images/default-img.png'   //未获取到新闻图片时的默认图片
+
+var touchStart   //记录触摸开始坐标
 
 Page({
 
@@ -17,9 +21,8 @@ Page({
       { type: 'ty', name: '体育' },
       { type: 'other', name: '其他' },
     ],
-    currentNewsType: 'gn',   // 初始激活的新闻类型(默认为国内)
+    currentNewsType: 'gn',   // 当前激活的新闻类型(初始默认为国内)
     newsList: [],   //新闻列表
-    touchStart: null,
   },
 
   /**
@@ -33,7 +36,10 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-  
+    //下拉刷新新闻列表(通过回调函数，在列表加载完成后结束下拉动作)
+    this.getNewsList(() => {
+      wx.stopPullDownRefresh()
+    })  
   },
 
   /**
@@ -49,20 +55,32 @@ Page({
   /**
    * 获取新闻列表
    */
-  getNewsList() {
+  getNewsList(callback) {
     wx.request({
       url: 'https://test-miniprogram.com/api/news/list',
       data: {
         type: this.data.currentNewsType,
       },
       success: res => {
+        //获取新闻列表数据
         let newsList = res.data.result
+        //新闻列表数据处理
         for (let i = 0; i < newsList.length; i++) {
-          newsList[i].date = newsList[i].date.substr(11, 5)
+          //修改接口获取到的新闻时间的格式
+          let newsDate = newsList[i].date.substr(0, 10)
+          let newsTime = newsList[i].date.substr(11, 5)
+          newsList[i].date = `${newsDate} ${newsTime}`
+
+          //若接口未返回新闻图片，设置默认图片
+          if (newsList[i].firstImage == '')
+            newsList[i].firstImage = dftImg
         } 
         this.setData({
           newsList: newsList
         })
+      },
+      complete: res => {
+        callback && callback()
       },
     })
   },
@@ -82,15 +100,13 @@ Page({
    * 滑动切换新闻类型
    */
   onSwitchTypeStart(event) {
-    //记录touch开始的位置坐标
-    this.setData({
-      touchStart: event.changedTouches[0],
-    }) 
+    //记录触摸开始的位置坐标
+    touchStart = event.changedTouches[0]
   },
   onSwitchTypeEnd(event) {
     //获取触摸开始及结束时的坐标
-    let startX = this.data.touchStart.pageX
-    let startY = this.data.touchStart.pageY
+    let startX = touchStart.pageX
+    let startY = touchStart.pageY
     let endX = event.changedTouches[0].pageX
     let endY = event.changedTouches[0].pageY
 
